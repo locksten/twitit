@@ -1,19 +1,21 @@
-.vscode/*
+.vscode/
 !.vscode/blueprint-templates
 !.vscode/launch.json
 
-# dependencies
-/node_modules
-/.pnp
-.pnp.js
+dependency-graph.html
 
-# testing
-/coverage
+storybook-static/
 
-# production
-/build
+coverage/
 
-# misc
+build/
+
+dist/
+
+node_modules/
+
+tsconfig.tsbuildinfo
+
 .DS_Store
 .env.local
 .env.development.local

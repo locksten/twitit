@@ -1,0 +1,12 @@
+{
+  "db": {
+    "connectionString": "postgres://postgres:@localhost:5432/twitit?sslmode=disable"
+  },
+  "outDir": "./src",
+  "schemas": {
+    "public": {
+      "include": "*",
+      "exclude": []
+    }
+  }
+}
