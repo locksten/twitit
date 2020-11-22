@@ -33,20 +33,72 @@ declare module 'zapatos/schema' {
 
   /* --- tables --- */
 
-  export namespace User {
-    export type Table = 'User';
+  export namespace Follow {
+    export type Table = 'Follow';
     export interface Selectable {
-      id: number;
-      name: string;
+      followerId: number;
+      followeeId: number;
+      createdAt: Date;
     }
     export interface Insertable {
-      id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
-      name: string | db.Parameter<string> | db.SQLFragment;
+      followerId: number | db.Parameter<number> | db.SQLFragment;
+      followeeId: number | db.Parameter<number> | db.SQLFragment;
+      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
     }
     export interface Updatable extends UpdatableFromInsertable<Insertable> { }
     export interface Whereable extends WhereableFromInsertable<Insertable> { }
     export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
-    export type UniqueIndex = 'User_pkey';
+    export type UniqueIndex = 'Follow_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  export namespace Twit {
+    export type Table = 'Twit';
+    export interface Selectable {
+      id: number;
+      text: string;
+      createdAt: Date;
+      authorId: number;
+    }
+    export interface Insertable {
+      id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
+      text: string | db.Parameter<string> | db.SQLFragment;
+      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
+      authorId: number | db.Parameter<number> | db.SQLFragment;
+    }
+    export interface Updatable extends UpdatableFromInsertable<Insertable> { }
+    export interface Whereable extends WhereableFromInsertable<Insertable> { }
+    export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
+    export type UniqueIndex = 'Twit_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  export namespace User {
+    export type Table = 'User';
+    export interface Selectable {
+      id: number;
+      username: string;
+      password: string;
+      email: string;
+      createdAt: Date;
+    }
+    export interface Insertable {
+      id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
+      username: string | db.Parameter<string> | db.SQLFragment;
+      password: string | db.Parameter<string> | db.SQLFragment;
+      email: string | db.Parameter<string> | db.SQLFragment;
+      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
+    }
+    export interface Updatable extends UpdatableFromInsertable<Insertable> { }
+    export interface Whereable extends WhereableFromInsertable<Insertable> { }
+    export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
+    export type UniqueIndex = 'User_pkey' | 'User_username_key' | 'User_email_key';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
@@ -55,41 +107,55 @@ declare module 'zapatos/schema' {
 
   /* === cross-table types === */
 
-  export type Table = User.Table;
-  export type Selectable = User.Selectable;
-  export type Whereable = User.Whereable;
-  export type Insertable = User.Insertable;
-  export type Updatable = User.Updatable;
-  export type UniqueIndex = User.UniqueIndex;
-  export type Column = User.Column;
-  export type AllTables = [User.Table];
+  export type Table = Follow.Table | Twit.Table | User.Table;
+  export type Selectable = Follow.Selectable | Twit.Selectable | User.Selectable;
+  export type Whereable = Follow.Whereable | Twit.Whereable | User.Whereable;
+  export type Insertable = Follow.Insertable | Twit.Insertable | User.Insertable;
+  export type Updatable = Follow.Updatable | Twit.Updatable | User.Updatable;
+  export type UniqueIndex = Follow.UniqueIndex | Twit.UniqueIndex | User.UniqueIndex;
+  export type Column = Follow.Column | Twit.Column | User.Column;
+  export type AllTables = [Follow.Table, Twit.Table, User.Table];
 
 
   export type SelectableForTable<T extends Table> = {
+    Follow: Follow.Selectable;
+    Twit: Twit.Selectable;
     User: User.Selectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
+    Follow: Follow.Whereable;
+    Twit: Twit.Whereable;
     User: User.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
+    Follow: Follow.Insertable;
+    Twit: Twit.Insertable;
     User: User.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
+    Follow: Follow.Updatable;
+    Twit: Twit.Updatable;
     User: User.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
+    Follow: Follow.UniqueIndex;
+    Twit: Twit.UniqueIndex;
     User: User.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
+    Follow: Follow.Column;
+    Twit: Twit.Column;
     User: User.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
+    Follow: Follow.SQL;
+    Twit: Twit.SQL;
     User: User.SQL;
   }[T];
 

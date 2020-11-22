@@ -1,6 +1,6 @@
 {
   "db": {
-    "connectionString": "postgres://postgres:@localhost:5432/twitit?sslmode=disable"
+    "connectionString": "{{DATABASE_URL}}"
   },
   "outDir": "./src",
   "schemas": {

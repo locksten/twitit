@@ -1,8 +1,7 @@
 import { Pool } from "pg"
 
 export const pool = new Pool({
-  connectionString:
-    "postgres://postgres:@localhost:5432/twitit?sslmode=disable",
+  connectionString: process.env.DATABASE_URL,
 })
 
 export type AppContext = {
