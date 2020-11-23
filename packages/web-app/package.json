@@ -9,6 +9,10 @@
     "eject": "react-scripts eject"
   },
   "dependencies": {
+    "@emotion/react": "^11.1.1",
+    "@emotion/styled": "^11.0.0",
+    "@reach/dialog": "^0.11.2",
+    "@react-aria/focus": "^3.2.3",
     "@testing-library/jest-dom": "^5.11.4",
     "@testing-library/react": "^11.1.0",
     "@testing-library/user-event": "^12.1.10",
@@ -16,13 +20,12 @@
     "@types/node": "^12.0.0",
     "@types/react": "^16.9.56",
     "@types/react-dom": "^16.9.9",
-    "@types/styled-components": "^5.1.4",
     "react": "^17.0.1",
     "react-dom": "^17.0.1",
     "react-hook-form": "^6.11.3",
     "react-router-dom": "^5.2.0",
     "react-scripts": "4.0.0",
-    "styled-components": "^5.2.1",
+    "twin.macro": "^1.12.1",
     "typescript": "^4.0.5",
     "web-vitals": "^0.2.4"
   },
@@ -50,9 +53,19 @@
   },
   "babelMacros": {
     "twin": {
-      "config": "src/styling/tailwind.config.js",
-      "preset": "styled-components",
-      "autoCssProp": true,
+      "styled": {
+        "import": "default",
+        "from": "@emotion/styled"
+      },
+      "css": {
+        "import": "css",
+        "from": "@emotion/react"
+      },
+      "global": {
+        "import": "Global",
+        "from": "@emotion/react"
+      },
+      "config": "tailwind.config.js",
       "debugProp": true,
       "debugPlugins": false,
       "debug": false
