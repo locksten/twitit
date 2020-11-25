@@ -33,3 +33,17 @@ export const queryTwitById = t.field("twitById", {
     return await db.selectOne("Twit", { id: Number(id) }).run(pool)
   },
 })
+
+export const mutationMakeTwit = t.field("makeTwit", {
+  type: TwitType,
+  args: { text: t.arg(t.NonNullInput(t.String)) },
+  resolve: async (_, { text }, { pool, auth }) => {
+    if (!auth.id) return null
+    return await db
+      .insert("Twit", {
+        authorId: auth.id,
+        text,
+      })
+      .run(pool)
+  },
+})

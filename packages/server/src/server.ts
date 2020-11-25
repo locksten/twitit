@@ -1,9 +1,12 @@
 import { ApolloServer } from "apollo-server-express/dist/ApolloServer"
-import { appContext } from "context"
+import { newAppContext } from "context"
 import express from "express"
 import { schema } from "schema/schema"
 
-const server = new ApolloServer({ schema, context: appContext })
+const server = new ApolloServer({
+  schema,
+  context: newAppContext,
+})
 
 const app = express()
 

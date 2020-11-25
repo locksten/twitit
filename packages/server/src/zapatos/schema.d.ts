@@ -38,12 +38,12 @@ declare module 'zapatos/schema' {
     export interface Selectable {
       followerId: number;
       followeeId: number;
-      createdAt: Date;
+      createdAt: Date | null;
     }
     export interface Insertable {
       followerId: number | db.Parameter<number> | db.SQLFragment;
       followeeId: number | db.Parameter<number> | db.SQLFragment;
-      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
+      createdAt?: Date | db.Parameter<Date> | db.DateString | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable extends UpdatableFromInsertable<Insertable> { }
     export interface Whereable extends WhereableFromInsertable<Insertable> { }
@@ -60,13 +60,13 @@ declare module 'zapatos/schema' {
     export interface Selectable {
       id: number;
       text: string;
-      createdAt: Date;
+      createdAt: Date | null;
       authorId: number;
     }
     export interface Insertable {
       id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
       text: string | db.Parameter<string> | db.SQLFragment;
-      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
+      createdAt?: Date | db.Parameter<Date> | db.DateString | null | db.DefaultType | db.SQLFragment;
       authorId: number | db.Parameter<number> | db.SQLFragment;
     }
     export interface Updatable extends UpdatableFromInsertable<Insertable> { }
@@ -85,20 +85,18 @@ declare module 'zapatos/schema' {
       id: number;
       username: string;
       password: string;
-      email: string;
-      createdAt: Date;
+      createdAt: Date | null;
     }
     export interface Insertable {
       id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
       username: string | db.Parameter<string> | db.SQLFragment;
       password: string | db.Parameter<string> | db.SQLFragment;
-      email: string | db.Parameter<string> | db.SQLFragment;
-      createdAt: Date | db.Parameter<Date> | db.DateString | db.SQLFragment;
+      createdAt?: Date | db.Parameter<Date> | db.DateString | null | db.DefaultType | db.SQLFragment;
     }
     export interface Updatable extends UpdatableFromInsertable<Insertable> { }
     export interface Whereable extends WhereableFromInsertable<Insertable> { }
     export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
-    export type UniqueIndex = 'User_pkey' | 'User_username_key' | 'User_email_key';
+    export type UniqueIndex = 'User_pkey' | 'User_username_key';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;

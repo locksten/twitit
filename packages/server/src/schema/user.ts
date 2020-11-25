@@ -4,17 +4,18 @@ import { ObjectType } from "gqtx/dist/types"
 import { DateType } from "schema/date"
 import { QFollow } from "schema/follow"
 import { TwitType } from "schema/twit"
-import { idResolver, t } from "schema/typesFactory"
+import { idResolver, t, typeResolver } from "schema/typesFactory"
 import { User as QUser } from "zapatos/schema"
 
 export { User as QUser } from "zapatos/schema"
-export type User = QUser.JSONSelectable
+export type User = QUser.JSONSelectable & { _type?: "User" }
 
 export const UserType: ObjectType<AppContext, User | null> = t.objectType<User>(
   {
     name: "User",
     fields: () => [
       idResolver,
+      typeResolver("User"),
       t.defaultField("username", t.NonNull(t.String)),
       t.defaultField("createdAt", t.NonNull(DateType)),
       t.field("followers", {

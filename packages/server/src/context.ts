@@ -1,11 +1,16 @@
+import { ExpressContext } from "apollo-server-express/dist/ApolloServer"
+import { authentication } from "schema/auth/authentication"
+import { newDataLoaders } from "dataloaders"
 import { Pool } from "pg"
 
-export const pool = new Pool({
+const pool = new Pool({
   connectionString: process.env.DATABASE_URL,
 })
 
-export type AppContext = {
-  pool: Pool
-}
+export const newAppContext = (ctx: ExpressContext) => ({
+  pool,
+  l: newDataLoaders(pool),
+  auth: authentication(ctx),
+})
 
-export const appContext: AppContext = { pool }
+export type AppContext = ReturnType<typeof newAppContext>

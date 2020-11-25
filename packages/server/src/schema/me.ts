@@ -30,7 +30,7 @@ export const MeType = t.objectType<Me>({
 
 export const queryMe = t.field("me", {
   type: MeType,
-  resolve: () => {
-    return { id: 1 }
+  resolve: (_, _args, { auth }) => {
+    return auth.id ? { id: auth.id } : null
   },
 })
