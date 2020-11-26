@@ -3,7 +3,8 @@ import { db, dc } from "database"
 import { ObjectType } from "gqtx/dist/types"
 import { DateType } from "schema/date"
 import { QFollow } from "schema/follow"
-import { TwitType } from "schema/twit"
+import { QLike } from "schema/like"
+import { QTwit, Twit, TwitType } from "schema/twit"
 import { idResolver, t, typeResolver } from "schema/typesFactory"
 import { User as QUser } from "zapatos/schema"
 
@@ -60,6 +61,16 @@ export const UserType: ObjectType<AppContext, User | null> = t.objectType<User>(
               { order: { by: "createdAt", direction: "DESC" } },
             )
             .run(pool)
+        },
+      }),
+      t.field("likedTwits", {
+        type: t.NonNull(t.List(t.NonNull(TwitType))),
+        resolve: async (user, _args, { pool }) => {
+          return await db.sql<QLike.SQL | QTwit.SQL, Twit[]>`
+            SELECT ${"Twit"}.*
+            FROM ${"Like"}
+            JOIN ${"Twit"} ON ${"Like"}.${"twitId"} = ${"Twit"}.${"id"}
+            WHERE ${"userId"} = ${db.param(user.id)}`.run(pool)
         },
       }),
     ],

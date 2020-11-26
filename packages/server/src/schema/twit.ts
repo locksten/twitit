@@ -1,5 +1,13 @@
 import { db } from "database"
 import { DateType } from "schema/date"
+import {
+  createHashtags,
+  extractHashtags,
+  Hashtag,
+  HashtagType,
+  QHashtag,
+} from "schema/hashtag"
+import { QTwitHashtag } from "schema/twitHashtag"
 import { idResolver, t, typeResolver } from "schema/typesFactory"
 import { UserType } from "schema/user"
 import { Twit as QTwit } from "zapatos/schema"
@@ -23,6 +31,22 @@ export const TwitType = t.objectType<Twit>({
           .run(pool)
       },
     }),
+    t.field("hashtags", {
+      type: t.NonNull(t.List(t.NonNull(HashtagType))),
+      resolve: async (twit, _args, { pool }) => {
+        return await db.sql<QTwitHashtag.SQL | QHashtag.SQL, Hashtag[]>`
+          SELECT ${"Hashtag"}.*
+          FROM ${"Twit_Hashtag"}
+          JOIN ${"Hashtag"} ON ${"Twit_Hashtag"}.${"hashtagId"} = ${"Hashtag"}.${"id"}
+          WHERE ${{ twitId: twit.id }}`.run(pool)
+      },
+    }),
+    t.field("likeCount", {
+      type: t.NonNull(t.Int),
+      resolve: async (twit, _args, { pool }) => {
+        return await db.count("Like", { twitId: twit.id }).run(pool)
+      },
+    }),
   ],
 })
 
@@ -41,11 +65,21 @@ export const mutationMakeTwit = t.field("makeTwit", {
   args: { text: t.arg(t.NonNullInput(t.String)) },
   resolve: async (_, { text }, { pool, auth }) => {
     if (!auth.id) return null
-    return await db
-      .insert("Twit", {
-        authorId: auth.id,
-        text,
-      })
+
+    const twit = await db.insert("Twit", { authorId: auth.id, text }).run(pool)
+
+    const hashtags = await createHashtags(pool, extractHashtags(text))
+
+    await db
+      .insert(
+        "Twit_Hashtag",
+        hashtags.map((hashtag) => ({
+          twitId: twit.id,
+          hashtagId: hashtag.id,
+        })),
+      )
       .run(pool)
+
+    return twit
   },
 })

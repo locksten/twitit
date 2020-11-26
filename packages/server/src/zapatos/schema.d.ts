@@ -55,6 +55,46 @@ declare module 'zapatos/schema' {
     export type SQL = SQLExpression | SQLExpression[];
   }
 
+  export namespace Hashtag {
+    export type Table = 'Hashtag';
+    export interface Selectable {
+      id: number;
+      text: string;
+    }
+    export interface Insertable {
+      id?: number | db.Parameter<number> | db.DefaultType | db.SQLFragment;
+      text: string | db.Parameter<string> | db.SQLFragment;
+    }
+    export interface Updatable extends UpdatableFromInsertable<Insertable> { }
+    export interface Whereable extends WhereableFromInsertable<Insertable> { }
+    export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
+    export type UniqueIndex = 'Hashtag_pkey' | 'Hashtag_text_key';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  export namespace Like {
+    export type Table = 'Like';
+    export interface Selectable {
+      twitId: number;
+      userId: number;
+    }
+    export interface Insertable {
+      twitId: number | db.Parameter<number> | db.SQLFragment;
+      userId: number | db.Parameter<number> | db.SQLFragment;
+    }
+    export interface Updatable extends UpdatableFromInsertable<Insertable> { }
+    export interface Whereable extends WhereableFromInsertable<Insertable> { }
+    export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
+    export type UniqueIndex = 'Like_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
   export namespace Twit {
     export type Table = 'Twit';
     export interface Selectable {
@@ -73,6 +113,26 @@ declare module 'zapatos/schema' {
     export interface Whereable extends WhereableFromInsertable<Insertable> { }
     export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
     export type UniqueIndex = 'Twit_pkey';
+    export type Column = keyof Selectable;
+    export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
+    export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
+    export type SQL = SQLExpression | SQLExpression[];
+  }
+
+  export namespace Twit_Hashtag {
+    export type Table = 'Twit_Hashtag';
+    export interface Selectable {
+      twitId: number;
+      hashtagId: number;
+    }
+    export interface Insertable {
+      twitId: number | db.Parameter<number> | db.SQLFragment;
+      hashtagId: number | db.Parameter<number> | db.SQLFragment;
+    }
+    export interface Updatable extends UpdatableFromInsertable<Insertable> { }
+    export interface Whereable extends WhereableFromInsertable<Insertable> { }
+    export interface JSONSelectable extends JSONSelectableFromSelectable<Selectable> { }
+    export type UniqueIndex = 'Twit_Hashtag_pkey';
     export type Column = keyof Selectable;
     export type OnlyCols<T extends readonly Column[]> = Pick<Selectable, T[number]>;
     export type SQLExpression = db.GenericSQLExpression | db.ColumnNames<Updatable | (keyof Updatable)[]> | db.ColumnValues<Updatable> | Table | Whereable | Column;
@@ -105,55 +165,76 @@ declare module 'zapatos/schema' {
 
   /* === cross-table types === */
 
-  export type Table = Follow.Table | Twit.Table | User.Table;
-  export type Selectable = Follow.Selectable | Twit.Selectable | User.Selectable;
-  export type Whereable = Follow.Whereable | Twit.Whereable | User.Whereable;
-  export type Insertable = Follow.Insertable | Twit.Insertable | User.Insertable;
-  export type Updatable = Follow.Updatable | Twit.Updatable | User.Updatable;
-  export type UniqueIndex = Follow.UniqueIndex | Twit.UniqueIndex | User.UniqueIndex;
-  export type Column = Follow.Column | Twit.Column | User.Column;
-  export type AllTables = [Follow.Table, Twit.Table, User.Table];
+  export type Table = Follow.Table | Hashtag.Table | Like.Table | Twit.Table | Twit_Hashtag.Table | User.Table;
+  export type Selectable = Follow.Selectable | Hashtag.Selectable | Like.Selectable | Twit.Selectable | Twit_Hashtag.Selectable | User.Selectable;
+  export type Whereable = Follow.Whereable | Hashtag.Whereable | Like.Whereable | Twit.Whereable | Twit_Hashtag.Whereable | User.Whereable;
+  export type Insertable = Follow.Insertable | Hashtag.Insertable | Like.Insertable | Twit.Insertable | Twit_Hashtag.Insertable | User.Insertable;
+  export type Updatable = Follow.Updatable | Hashtag.Updatable | Like.Updatable | Twit.Updatable | Twit_Hashtag.Updatable | User.Updatable;
+  export type UniqueIndex = Follow.UniqueIndex | Hashtag.UniqueIndex | Like.UniqueIndex | Twit.UniqueIndex | Twit_Hashtag.UniqueIndex | User.UniqueIndex;
+  export type Column = Follow.Column | Hashtag.Column | Like.Column | Twit.Column | Twit_Hashtag.Column | User.Column;
+  export type AllTables = [Follow.Table, Hashtag.Table, Like.Table, Twit.Table, Twit_Hashtag.Table, User.Table];
 
 
   export type SelectableForTable<T extends Table> = {
     Follow: Follow.Selectable;
+    Hashtag: Hashtag.Selectable;
+    Like: Like.Selectable;
     Twit: Twit.Selectable;
+    Twit_Hashtag: Twit_Hashtag.Selectable;
     User: User.Selectable;
   }[T];
 
   export type WhereableForTable<T extends Table> = {
     Follow: Follow.Whereable;
+    Hashtag: Hashtag.Whereable;
+    Like: Like.Whereable;
     Twit: Twit.Whereable;
+    Twit_Hashtag: Twit_Hashtag.Whereable;
     User: User.Whereable;
   }[T];
 
   export type InsertableForTable<T extends Table> = {
     Follow: Follow.Insertable;
+    Hashtag: Hashtag.Insertable;
+    Like: Like.Insertable;
     Twit: Twit.Insertable;
+    Twit_Hashtag: Twit_Hashtag.Insertable;
     User: User.Insertable;
   }[T];
 
   export type UpdatableForTable<T extends Table> = {
     Follow: Follow.Updatable;
+    Hashtag: Hashtag.Updatable;
+    Like: Like.Updatable;
     Twit: Twit.Updatable;
+    Twit_Hashtag: Twit_Hashtag.Updatable;
     User: User.Updatable;
   }[T];
 
   export type UniqueIndexForTable<T extends Table> = {
     Follow: Follow.UniqueIndex;
+    Hashtag: Hashtag.UniqueIndex;
+    Like: Like.UniqueIndex;
     Twit: Twit.UniqueIndex;
+    Twit_Hashtag: Twit_Hashtag.UniqueIndex;
     User: User.UniqueIndex;
   }[T];
 
   export type ColumnForTable<T extends Table> = {
     Follow: Follow.Column;
+    Hashtag: Hashtag.Column;
+    Like: Like.Column;
     Twit: Twit.Column;
+    Twit_Hashtag: Twit_Hashtag.Column;
     User: User.Column;
   }[T];
 
   export type SQLForTable<T extends Table> = {
     Follow: Follow.SQL;
+    Hashtag: Hashtag.SQL;
+    Like: Like.SQL;
     Twit: Twit.SQL;
+    Twit_Hashtag: Twit_Hashtag.SQL;
     User: User.SQL;
   }[T];
 
