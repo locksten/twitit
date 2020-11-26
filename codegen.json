@@ -1,0 +1,21 @@
+{
+  "schema": "http://localhost:4000/graphql",
+  "documents": "packages/web-app/src/**/!(*.d).{ts,tsx}",
+  "generates": {
+    "packages/web-app/src/graphql.generated.ts": {
+      "plugins": [
+        "typescript",
+        "typescript-operations",
+        "@graphql-codegen/typed-document-node"
+      ]
+    },
+    "packages/web-app/src/urql.generated.ts": {
+      "plugins": ["typescript-urql"],
+      "config": {
+        "documentMode": "external",
+        "importDocumentNodeExternallyFrom": "graphql.generated.ts",
+        "importOperationTypesFrom": "packages/web-app/src/graphql.generated.ts"
+      }
+    }
+  }
+}

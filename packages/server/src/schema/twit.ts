@@ -1,18 +1,20 @@
 import { db } from "database"
-import { idResolver, t } from "schema/typesFactory"
+import { DateType } from "schema/date"
+import { idResolver, t, typeResolver } from "schema/typesFactory"
 import { UserType } from "schema/user"
 import { Twit as QTwit } from "zapatos/schema"
 
 export { Twit as QTwit } from "zapatos/schema"
-export type Twit = QTwit.JSONSelectable
+export type Twit = QTwit.JSONSelectable & { _type?: "Twit" }
 
 export const TwitType = t.objectType<Twit>({
   name: "Twit",
   description: "A Twit",
   fields: () => [
     idResolver,
+    typeResolver("Twit"),
     t.defaultField("text", t.NonNull(t.String)),
-    t.defaultField("createdAt", t.NonNull(t.String)),
+    t.defaultField("createdAt", t.NonNull(DateType)),
     t.field("author", {
       type: t.NonNull(UserType),
       resolve: async (twit, _args, { pool }) => {

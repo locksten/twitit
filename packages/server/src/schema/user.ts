@@ -53,7 +53,13 @@ export const UserType: ObjectType<AppContext, User | null> = t.objectType<User>(
       t.field("twits", {
         type: t.NonNull(t.List(t.NonNull(TwitType))),
         resolve: async (user, _args, { pool }) => {
-          return await db.select("Twit", { authorId: user.id }).run(pool)
+          return await db
+            .select(
+              "Twit",
+              { authorId: user.id },
+              { order: { by: "createdAt", direction: "DESC" } },
+            )
+            .run(pool)
         },
       }),
     ],
