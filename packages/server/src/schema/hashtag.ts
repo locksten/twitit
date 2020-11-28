@@ -41,6 +41,16 @@ export const queryHashtagById = t.field("hashtagById", {
   },
 })
 
+export const queryHashtagByText = t.field("hashtagByText", {
+  type: HashtagType,
+  args: {
+    text: t.arg(t.NonNullInput(t.String)),
+  },
+  resolve: async (_, { text }, { pool }) => {
+    return await db.selectOne("Hashtag", { text }).run(pool)
+  },
+})
+
 export const queryHashtagSearch = t.field("hashtagSearch", {
   type: t.NonNull(t.List(t.NonNull(HashtagType))),
   args: {
@@ -65,4 +75,5 @@ export const createHashtags = async (pool: Pool, hashtags: string[]) => {
   return await db.select("Hashtag", { text: dc.isIn(hashtags) }).run(pool)
 }
 
-export const extractHashtags = (text) => text.match(/#[a-z0-9]+/gi) || []
+export const extractHashtags = (text: string): string[] =>
+  text?.match(/#([a-z0-9]+)/gi)?.map((tag) => tag.substring(1)) || []

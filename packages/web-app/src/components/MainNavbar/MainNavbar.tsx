@@ -1,26 +1,22 @@
 /** @jsxImportSource @emotion/react */
-import { SecondaryButton } from "components/SecondaryButton"
+import { AuthSegment } from "components/AuthSegment"
+import { NavButton } from "components/NavButton"
+import { TextField } from "components/TextField"
 import React, { FC } from "react"
 import "twin.macro"
 
-export const MainNavbar: FC<{}> = ({ ...props }) => (
-  <div tw="flex justify-between py-2 px-4">
-    <div tw="grid grid-flow-col gap-2" {...props}>
-      <input
-        size={10}
-        placeholder="search"
-        tw="max-w-sm rounded-md border border-gray-300 px-2"
-      ></input>
-      <SecondaryButton text="#twitit" />
-      <SecondaryButton text="#project" />
-      <SecondaryButton text="#react" />
-      <SecondaryButton text="#graphql" />
-      <SecondaryButton text="#tailwind" />
-      <SecondaryButton text="@bob" />
-      <SecondaryButton text="save #current" />
+export const MainNavbar: FC<{}> = ({ ...props }) => {
+  return (
+    <div tw="flex justify-between py-2 px-4">
+      <div tw="grid grid-flow-col gap-2" {...props}>
+        <TextField name="search" placeholder="Search" size={9} />
+        <NavButton to="hashtag/react/twit" text="#react" />
+        <NavButton to="hashtag/graphql/twit" text="#graphql" />
+        <NavButton to="user/bob/twit" absoluteMatch="user/bob/*" text="@bob" />
+      </div>
+      <div tw="grid grid-flow-col gap-2">
+        <AuthSegment />
+      </div>
     </div>
-    <div tw="grid grid-flow-col gap-2">
-      <SecondaryButton text="@alice" />
-    </div>
-  </div>
-)
+  )
+}

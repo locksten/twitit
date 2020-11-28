@@ -87,6 +87,16 @@ export const queryUserById = t.field("userById", {
   },
 })
 
+export const queryUserByName = t.field("userByName", {
+  type: UserType,
+  args: {
+    username: t.arg(t.NonNullInput(t.String)),
+  },
+  resolve: async (_, { username }, { pool }) => {
+    return await db.selectOne("User", { username }).run(pool)
+  },
+})
+
 export const queryUserSearch = t.field("userSearch", {
   type: t.NonNull(t.List(t.NonNull(UserType))),
   args: {

@@ -1,20 +1,26 @@
 import { buildGraphQLSchema } from "gqtx"
 import { mutationLogin } from "schema/auth/login"
 import { mutationRegister } from "schema/auth/register"
-import { queryHashtagById, queryHashtagSearch } from "schema/hashtag"
-import { mutationLikeTwit } from "schema/like"
+import {
+  queryHashtagById,
+  queryHashtagByText,
+  queryHashtagSearch,
+} from "schema/hashtag"
+import { mutationLikeTwit, mutationUnlikeTwit } from "schema/like"
 import { queryMe } from "schema/me"
 import { mutationMakeTwit, queryTwitById } from "schema/twit"
 import { t } from "schema/typesFactory"
-import { queryUserById, queryUserSearch } from "schema/user"
+import { queryUserById, queryUserByName, queryUserSearch } from "schema/user"
 
 const query = t.queryType({
   fields: [
     queryMe,
     queryUserById,
+    queryUserByName,
     queryUserSearch,
     queryTwitById,
     queryHashtagById,
+    queryHashtagByText,
     queryHashtagSearch,
   ],
 })
@@ -25,6 +31,7 @@ const mutation = t.mutationType({
     mutationLogin,
     mutationMakeTwit,
     mutationLikeTwit,
+    mutationUnlikeTwit,
   ],
 })
 

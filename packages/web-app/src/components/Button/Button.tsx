@@ -3,7 +3,7 @@ import { Clickable, ClickableProps } from "components/Clickable"
 import React, { FC } from "react"
 import "twin.macro"
 
-type ButtonProps = ClickableProps & { text: string }
+export type ButtonProps = ClickableProps & { text: string }
 
 export const Button: FC<ButtonProps> = ({ text, ...props }) => (
   <Clickable

@@ -1,7 +1,7 @@
 import { db } from "database"
 import { QFollow } from "schema/follow"
 import { QTwit, Twit, TwitType } from "schema/twit"
-import { t } from "schema/typesFactory"
+import { idResolver, t } from "schema/typesFactory"
 import { UserType } from "schema/user"
 
 export type Me = { id: number }
@@ -9,6 +9,7 @@ export type Me = { id: number }
 export const MeType = t.objectType<Me>({
   name: "Me",
   fields: () => [
+    idResolver,
     t.field("user", {
       type: t.NonNull(UserType),
       resolve: async (me, _args, { pool }) => {

@@ -47,6 +47,15 @@ export const TwitType = t.objectType<Twit>({
         return await db.count("Like", { twitId: twit.id }).run(pool)
       },
     }),
+    t.field("iHaveLiked", {
+      type: t.NonNull(t.Boolean),
+      resolve: async (twit, _args, { pool, auth }) => {
+        if (!auth.id) return false
+        return !!(await db
+          .selectOne("Like", { twitId: twit.id, userId: auth.id })
+          .run(pool))
+      },
+    }),
   ],
 })
 

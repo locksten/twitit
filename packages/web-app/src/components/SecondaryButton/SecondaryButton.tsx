@@ -1,15 +1,30 @@
 /** @jsxImportSource @emotion/react */
-import { Button } from "components/Button"
+import { Button, ButtonProps } from "components/Button"
 import React, { FC } from "react"
 import "twin.macro"
+import tw, { css } from "twin.macro"
 
-type SecondaryButtonProps = Parameters<typeof Button>[0] & { text: string }
+export type SecondaryButtonProps = ButtonProps & {
+  isActive?: boolean
+  isDisabled?: boolean
+  text: string
+}
 
-export const SecondaryButton: FC<SecondaryButtonProps> = ({ ...props }) => (
+export const SecondaryButton: FC<SecondaryButtonProps> = ({
+  isActive = false,
+  isDisabled = false,
+  ...props
+}) => (
   <Button
-    tw="text-gray-600
-        hover:(bg-orange-200 text-orange-500)
-        active:(bg-orange-300 text-orange-600)"
+    css={css`
+      ${tw`text-gray-600`}
+      ${isDisabled
+        ? tw`cursor`
+        : tw`hover:(bg-orange-200 text-orange-500)
+             active:(bg-orange-300 text-orange-600)`}
+      ${isActive && tw`bg-orange-300 text-orange-600`}
+    `}
+    isDisabled={isDisabled}
     {...props}
   />
 )
