@@ -5,6 +5,7 @@ import { FollowButton } from "components/FollowButton"
 import { SecondaryButton } from "components/SecondaryButton"
 import gql from "graphql-tag"
 import React, { FC } from "react"
+import { Link } from "react-router-dom"
 import "twin.macro"
 
 export const FollowListItem: FC<{ fragment: FollowListItemFragment }> = ({
@@ -16,12 +17,18 @@ export const FollowListItem: FC<{ fragment: FollowListItemFragment }> = ({
 
   return (
     <div tw="flex justify-between items-center py-1 px-2" {...props}>
-      <div tw="font-bold">@{username}</div>
+      <Link to={`/user/${username}/twit`} tw="font-bold">
+        @{username}
+      </Link>
       <div>
         <div tw="grid grid-flow-col items-center gap-4">
           <div tw="grid sm:grid-flow-col">
-            <LabeledCount label="followers" count={followerCount} />
-            <LabeledCount label="following" count={followeeCount} />
+            <Link to={`/user/${username}/follower`}>
+              <LabeledCount label="followers" count={followerCount} />
+            </Link>
+            <Link to={`/user/${username}/following`}>
+              <LabeledCount label="following" count={followeeCount} />
+            </Link>
           </div>
           <div tw="w-24 flex justify-end">
             {isLoggedInUser ? (
