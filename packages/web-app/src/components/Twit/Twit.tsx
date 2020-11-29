@@ -47,23 +47,3 @@ export const _TwitFragments = gql`
     }
   }
 `
-
-const LikeTwit = gql`
-  mutation likeTwit($id: ID!) {
-    likeTwit(id: $id) {
-      id
-      ...Twit
-    }
-  }
-  ${_TwitFragments}
-`
-
-const UnikeTwit = gql`
-  mutation unlikeTwit($id: ID!) {
-    unlikeTwit(id: $id) {
-      id
-      ...Twit
-    }
-  }
-  ${_TwitFragments}
-`

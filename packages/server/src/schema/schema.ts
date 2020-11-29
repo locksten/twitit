@@ -1,6 +1,7 @@
 import { buildGraphQLSchema } from "gqtx"
 import { mutationLogin } from "schema/auth/login"
 import { mutationRegister } from "schema/auth/register"
+import { mutationFollowUser, mutationUnfollowUser } from "schema/follow"
 import {
   queryHashtagById,
   queryHashtagByText,
@@ -32,6 +33,8 @@ const mutation = t.mutationType({
     mutationMakeTwit,
     mutationLikeTwit,
     mutationUnlikeTwit,
+    mutationUnfollowUser,
+    mutationFollowUser,
   ],
 })
 

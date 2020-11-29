@@ -2,15 +2,27 @@ import {
   LoggedInUserQueryVariables,
   LoggedInUserQuery,
   LoggedInUserDocument,
+  FollowUserMutation,
+  FollowUserMutationVariables,
+  FollowUserDocument,
+  UnfollowUserMutation,
+  UnfollowUserMutationVariables,
+  UnfollowUserDocument,
   LoginMutation,
   LoginMutationVariables,
   LoginDocument,
-  LikeTwitMutation,
-  LikeTwitMutationVariables,
-  LikeTwitDocument,
+  RegisterMutation,
+  RegisterMutationVariables,
+  RegisterDocument,
   MakeTwitMutation,
   MakeTwitMutationVariables,
   MakeTwitDocument,
+  LikeTwitMutation,
+  LikeTwitMutationVariables,
+  LikeTwitDocument,
+  UnlikeTwitMutation,
+  UnlikeTwitMutationVariables,
+  UnlikeTwitDocument,
   MyTwitListQueryVariables,
   MyTwitListQuery,
   MyTwitListDocument,
@@ -23,9 +35,9 @@ import {
   LikedTwitListQueryVariables,
   LikedTwitListQuery,
   LikedTwitListDocument,
-  UnlikeTwitDocument,
-  UnlikeTwitMutation,
-  UnlikeTwitMutationVariables,
+  UserByNameQueryVariables,
+  UserByNameQuery,
+  UserByNameDocument,
 } from "common/graphql.generated"
 import * as Urql from "urql"
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -39,8 +51,32 @@ export function useLoggedInUserQuery(
   })
 }
 
+export function useFollowUserMutation() {
+  return Urql.useMutation<FollowUserMutation, FollowUserMutationVariables>(
+    FollowUserDocument,
+  )
+}
+
+export function useUnfollowUserMutation() {
+  return Urql.useMutation<UnfollowUserMutation, UnfollowUserMutationVariables>(
+    UnfollowUserDocument,
+  )
+}
+
 export function useLoginMutation() {
   return Urql.useMutation<LoginMutation, LoginMutationVariables>(LoginDocument)
+}
+
+export function useRegisterMutation() {
+  return Urql.useMutation<RegisterMutation, RegisterMutationVariables>(
+    RegisterDocument,
+  )
+}
+
+export function useMakeTwitMutation() {
+  return Urql.useMutation<MakeTwitMutation, MakeTwitMutationVariables>(
+    MakeTwitDocument,
+  )
 }
 
 export function useLikeTwitMutation() {
@@ -52,12 +88,6 @@ export function useLikeTwitMutation() {
 export function useUnlikeTwitMutation() {
   return Urql.useMutation<UnlikeTwitMutation, UnlikeTwitMutationVariables>(
     UnlikeTwitDocument,
-  )
-}
-
-export function useMakeTwitMutation() {
-  return Urql.useMutation<MakeTwitMutation, MakeTwitMutationVariables>(
-    MakeTwitDocument,
   )
 }
 
@@ -93,6 +123,15 @@ export function useLikedTwitListQuery(
 ) {
   return Urql.useQuery<LikedTwitListQuery>({
     query: LikedTwitListDocument,
+    ...options,
+  })
+}
+
+export function useUserByNameQuery(
+  options: Omit<Urql.UseQueryArgs<UserByNameQueryVariables>, "query"> = {},
+) {
+  return Urql.useQuery<UserByNameQuery>({
+    query: UserByNameDocument,
     ...options,
   })
 }

@@ -51,6 +51,15 @@ export const UserType: ObjectType<AppContext, User | null> = t.objectType<User>(
           return await db.count("Follow", { followerId: user.id }).run(pool)
         },
       }),
+      t.field("iAmFollowing", {
+        type: t.NonNull(t.Boolean),
+        resolve: async (user, _args, { pool, auth }) => {
+          if (!auth.id) return false
+          return !!(await db
+            .selectOne("Follow", { followerId: auth.id, followeeId: user.id })
+            .run(pool))
+        },
+      }),
       t.field("twits", {
         type: t.NonNull(t.List(t.NonNull(TwitType))),
         resolve: async (user, _args, { pool }) => {

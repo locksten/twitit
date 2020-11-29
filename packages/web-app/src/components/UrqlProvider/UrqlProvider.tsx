@@ -3,14 +3,8 @@ import { devtoolsExchange } from "@urql/devtools"
 import { authExchange } from "@urql/exchange-auth"
 import { cacheExchange } from "@urql/exchange-graphcache"
 import { AuthState, useAuth } from "common/authContext"
-import {
-  MakeTwitMutation,
-  MutationMakeTwitArgs,
-  MyTwitListQuery,
-  MyTwitListQueryVariables,
-} from "common/graphql.generated"
+import { MakeTwitMutation, MyTwitListQuery } from "common/graphql.generated"
 import { _MyTwitListQuery } from "components/TwitList"
-import { nanoid } from "nanoid"
 import React, { FC, useState } from "react"
 import "twin.macro"
 import {
@@ -20,6 +14,7 @@ import {
   makeOperation,
   Provider,
 } from "urql"
+import schema from "../../common/graphql-schema.generated.json"
 
 export const UrqlProvider: FC<{}> = ({ children }) => {
   const { logOut, getToken } = useAuth()
@@ -32,6 +27,7 @@ export const UrqlProvider: FC<{}> = ({ children }) => {
         devtoolsExchange,
         dedupExchange,
         cacheExchange({
+          schema: schema as any,
           updates: {
             Mutation: {
               makeTwit: (result, args, cache, info) => {

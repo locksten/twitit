@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "gen:graphql": "graphql-codegen"
+    "gen:graphql": "graphql-codegen && mv packages/server/graphql-schema.generated.json packages/web-app/src/common/graphql-schema.generated.json"
   },
   "workspaces": {
     "packages": [
@@ -10,13 +10,12 @@
   },
   "dependencies": {
     "@graphql-codegen/cli": "^1.19.2",
+    "@graphql-codegen/typed-document-node": "^1.18.0",
     "@graphql-codegen/typescript": "^1.18.0",
     "@graphql-codegen/typescript-operations": "^1.17.11",
     "@graphql-codegen/typescript-urql": "^2.0.2",
-    "@graphql-codegen/typed-document-node": "^1.18.0",
     "@graphql-typed-document-node/core": "^3.1.0",
     "graphql": "^15.4.0",
     "urql": "^1.11.3"
-  },
-  "devDependencies": {}
+  }
 }

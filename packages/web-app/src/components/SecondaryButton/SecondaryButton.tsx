@@ -4,27 +4,19 @@ import React, { FC } from "react"
 import "twin.macro"
 import tw, { css } from "twin.macro"
 
-export type SecondaryButtonProps = ButtonProps & {
-  isActive?: boolean
-  isDisabled?: boolean
-  text: string
-}
-
-export const SecondaryButton: FC<SecondaryButtonProps> = ({
-  isActive = false,
-  isDisabled = false,
+export const SecondaryButton: FC<{ isActive?: boolean } & ButtonProps> = ({
+  isActive,
   ...props
 }) => (
   <Button
     css={css`
-      ${tw`text-gray-600`}
-      ${isDisabled
-        ? tw`cursor`
-        : tw`hover:(bg-orange-200 text-orange-500)
-             active:(bg-orange-300 text-orange-600)`}
-      ${isActive && tw`bg-orange-300 text-orange-600`}
+      ${tw`bg-orange-200 text-orange-500
+           hover:(bg-orange-300 text-orange-600)
+           active:(bg-orange-400 text-orange-700 shadow-inner)`}
+      ${isActive &&
+      tw`bg-orange-300 text-orange-600
+         active:(bg-orange-400 text-orange-700 shadow-inner)`}
     `}
-    isDisabled={isDisabled}
     {...props}
   />
 )

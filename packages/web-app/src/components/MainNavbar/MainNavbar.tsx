@@ -13,6 +13,7 @@ export const MainNavbar: FC<{}> = ({ ...props }) => {
         <NavButton to="hashtag/react/twit" text="#react" />
         <NavButton to="hashtag/graphql/twit" text="#graphql" />
         <NavButton to="user/bob/twit" absoluteMatch="user/bob/*" text="@bob" />
+        <NavButton to="user/eve/twit" absoluteMatch="user/eve/*" text="@eve" />
       </div>
       <div tw="grid grid-flow-col gap-2">
         <AuthSegment />

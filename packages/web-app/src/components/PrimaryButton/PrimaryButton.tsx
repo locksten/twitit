@@ -5,9 +5,9 @@ import "twin.macro"
 
 export const PrimaryButton: FC<ButtonProps> = ({ ...props }) => (
   <Button
-    tw="bg-orange-200 text-orange-500 shadow-md
-        hover:(bg-orange-300 text-orange-600)
-        active:(bg-orange-400 text-orange-700 shadow)"
+    tw="bg-orange-300 text-orange-600
+        hover:(bg-orange-400 text-orange-700)
+        active:(bg-orange-500 text-orange-800 shadow-inner)"
     {...props}
   />
 )

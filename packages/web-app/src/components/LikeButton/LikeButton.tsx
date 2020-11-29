@@ -4,7 +4,7 @@ import {
   useLoggedInUserQuery,
   useUnlikeTwitMutation,
 } from "common/urql.generated"
-import { SecondaryButton } from "components/SecondaryButton"
+import { Button } from "components/Button"
 import React, { FC } from "react"
 import "twin.macro"
 import tw, { css } from "twin.macro"
@@ -22,17 +22,20 @@ export const LikeButton: FC<{
   const [__, unlikeTwit] = useUnlikeTwitMutation()
 
   return (
-    <SecondaryButton
+    <Button
       css={css`
-        ${tw`text-orange-500 hover:shadow-md active:shadow`}
-        ${iHaveLiked && tw`shadow-md`}
+        ${tw`text-orange-500`}
+        ${isAuthor
+          ? tw`cursor`
+          : tw`hover:(bg-orange-200 text-orange-500)
+               active:(bg-orange-300 text-orange-600 shadow-inner)`}
+        ${iHaveLiked && tw`bg-orange-300 text-orange-600`}
         ${!likeCount &&
         css`
           text-shadow: 0 0 0 rgba(231, 110, 50, 0.4);
           color: transparent;
         `}
       `}
-      isActive={iHaveLiked}
       isDisabled={isAuthor}
       onClick={() => {
         iHaveLiked ? unlikeTwit({ id }) : likeTwit({ id })

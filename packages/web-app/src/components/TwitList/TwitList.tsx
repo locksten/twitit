@@ -38,6 +38,26 @@ export const TwitList: FC<{ type: TwitListType; param: string }> = ({
   return <Component identifier={identifier} />
 }
 
+const LikeTwit = gql`
+  mutation likeTwit($id: ID!) {
+    likeTwit(id: $id) {
+      id
+      ...Twit
+    }
+  }
+  ${_TwitFragments}
+`
+
+const UnikeTwit = gql`
+  mutation unlikeTwit($id: ID!) {
+    unlikeTwit(id: $id) {
+      id
+      ...Twit
+    }
+  }
+  ${_TwitFragments}
+`
+
 export const _MyTwitListQuery = gql`
   query MyTwitList {
     me {
