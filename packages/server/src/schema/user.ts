@@ -79,7 +79,19 @@ export const UserType: ObjectType<AppContext, User | null> = t.objectType<User>(
             SELECT ${"Twit"}.*
             FROM ${"Like"}
             JOIN ${"Twit"} ON ${"Like"}.${"twitId"} = ${"Twit"}.${"id"}
-            WHERE ${"userId"} = ${db.param(user.id)}`.run(pool)
+            WHERE ${"userId"} = ${db.param(user.id)}
+            ORDER BY ${"createdAt"} DESC`.run(pool)
+        },
+      }),
+      t.field("feed", {
+        type: t.NonNull(t.List(t.NonNull(TwitType))),
+        resolve: async (user, _args, { pool }) => {
+          return await db.sql<QFollow.SQL | QTwit.SQL, Twit[]>`
+            SELECT ${"Twit"}.*
+            FROM ${"Follow"}
+            JOIN ${"Twit"} ON ${"Follow"}.${"followeeId"} = ${"Twit"}.${"authorId"}
+            WHERE ${"followerId"} = ${db.param(user.id)}
+            ORDER BY ${"Twit"}.${"createdAt"} DESC`.run(pool)
         },
       }),
     ],

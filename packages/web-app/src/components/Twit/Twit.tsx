@@ -3,6 +3,7 @@ import { TwitFragment } from "common/graphql.generated"
 import { LikeButton } from "components/LikeButton"
 import gql from "graphql-tag"
 import React, { FC } from "react"
+import { Link } from "react-router-dom"
 import "twin.macro"
 
 export const Twit: FC<{ fragment: TwitFragment }> = ({
@@ -19,7 +20,9 @@ export const Twit: FC<{ fragment: TwitFragment }> = ({
     <div tw="p-2" {...props}>
       <div>
         <div tw="grid grid-flow-col gap-2 justify-between items-center text-sm">
-          <div tw="text-gray-800">@{username}</div>
+          <Link to={`/user/${username}/twit`} tw="text-gray-800">
+            @{username}
+          </Link>
           <div tw="grid grid-flow-col gap-2 justify-end">
             <LikeButton
               authorUsername={username}

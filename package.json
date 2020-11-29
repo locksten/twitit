@@ -1,7 +1,7 @@
 {
   "private": true,
   "scripts": {
-    "gen:graphql": "graphql-codegen && mv packages/server/graphql-schema.generated.json packages/web-app/src/common/graphql-schema.generated.json"
+    "gen:graphql": "graphql-codegen && cp packages/server/graphql-schema.generated.json packages/web-app/src/common/graphql-schema.generated.json"
   },
   "workspaces": {
     "packages": [

@@ -5,15 +5,22 @@ import { NavButton } from "components/NavButton"
 import gql from "graphql-tag"
 import React, { FC } from "react"
 import "twin.macro"
+import tw, { css } from "twin.macro"
 
-export const AuthSegment: FC<{}> = ({ ...props }) => {
+export const AuthSegment: FC<{ fullWidth?: boolean }> = ({
+  fullWidth,
+  ...props
+}) => {
   const { logOut } = useAuth()
-
-  const [{ data: me }, _] = useLoggedInUserQuery()
-  const user = me?.me?.user
+  const user = useLoggedInUserQuery()[0].data?.me?.user
 
   return (
-    <div tw="" {...props}>
+    <div
+      css={css`
+        ${fullWidth && tw`grid`}
+      `}
+      {...props}
+    >
       {user ? (
         <div tw="grid gap-2 grid-flow-col">
           <NavButton to={`/feed`} text="Home" />
@@ -21,7 +28,7 @@ export const AuthSegment: FC<{}> = ({ ...props }) => {
           <NavButton to={`/login`} onClick={logOut} text="Logout" />
         </div>
       ) : (
-        <NavButton to="login" text="login" />
+        <NavButton to="login" text="Log in" />
       )}
     </div>
   )

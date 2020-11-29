@@ -3,12 +3,10 @@ import {
   useFollowUserMutation,
   useUnfollowUserMutation,
 } from "common/urql.generated"
-import { Button } from "components/Button"
 import { SecondaryButton } from "components/SecondaryButton"
 import gql from "graphql-tag"
 import React, { FC } from "react"
 import "twin.macro"
-import tw, { css } from "twin.macro"
 
 export const FollowButton: FC<{
   id: string

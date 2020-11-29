@@ -3,7 +3,15 @@ import { devtoolsExchange } from "@urql/devtools"
 import { authExchange } from "@urql/exchange-auth"
 import { cacheExchange } from "@urql/exchange-graphcache"
 import { AuthState, useAuth } from "common/authContext"
-import { MakeTwitMutation, MyTwitListQuery } from "common/graphql.generated"
+import {
+  FolloweeListQueryVariables,
+  FollowerListQuery,
+  FollowUserMutation,
+  MakeTwitMutation,
+  MyTwitListQuery,
+  MyTwitListQueryVariables,
+} from "common/graphql.generated"
+import { _FollowerList } from "components/FollowList"
 import { _MyTwitListQuery } from "components/TwitList"
 import React, { FC, useState } from "react"
 import "twin.macro"
@@ -40,6 +48,20 @@ export const UrqlProvider: FC<{}> = ({ children }) => {
                   },
                 )
               },
+              // followUser: (result, args, cache, info) => {
+              //   const users = (result as FollowUserMutation).followUser
+              //   if (!users) return
+              //   const follower = users[0]
+              //   const followee = users[1]
+
+              //   cache.updateQuery<FollowerListQuery, FolloweeListQueryVariables>(
+              //     { query: _FollowerList, variables: { username: followee.username } },
+              //     (data) => {
+              //       data?.me?...unshift()
+              //       return data
+              //     },
+              //   )
+              // },
             },
           },
         }),

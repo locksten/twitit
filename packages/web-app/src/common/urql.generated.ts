@@ -8,6 +8,12 @@ import {
   UnfollowUserMutation,
   UnfollowUserMutationVariables,
   UnfollowUserDocument,
+  FollowerListQueryVariables,
+  FollowerListQuery,
+  FollowerListDocument,
+  FolloweeListQueryVariables,
+  FolloweeListQuery,
+  FolloweeListDocument,
   LoginMutation,
   LoginMutationVariables,
   LoginDocument,
@@ -38,6 +44,9 @@ import {
   UserByNameQueryVariables,
   UserByNameQuery,
   UserByNameDocument,
+  MyFeedListDocument,
+  MyFeedListQuery,
+  MyFeedListQueryVariables,
 } from "common/graphql.generated"
 import * as Urql from "urql"
 export type Omit<T, K extends keyof T> = Pick<T, Exclude<keyof T, K>>
@@ -61,6 +70,24 @@ export function useUnfollowUserMutation() {
   return Urql.useMutation<UnfollowUserMutation, UnfollowUserMutationVariables>(
     UnfollowUserDocument,
   )
+}
+
+export function useFollowerListQuery(
+  options: Omit<Urql.UseQueryArgs<FollowerListQueryVariables>, "query"> = {},
+) {
+  return Urql.useQuery<FollowerListQuery>({
+    query: FollowerListDocument,
+    ...options,
+  })
+}
+
+export function useFolloweeListQuery(
+  options: Omit<Urql.UseQueryArgs<FolloweeListQueryVariables>, "query"> = {},
+) {
+  return Urql.useQuery<FolloweeListQuery>({
+    query: FolloweeListDocument,
+    ...options,
+  })
 }
 
 export function useLoginMutation() {
@@ -96,6 +123,15 @@ export function useMyTwitListQuery(
 ) {
   return Urql.useQuery<MyTwitListQuery>({
     query: MyTwitListDocument,
+    ...options,
+  })
+}
+
+export function useMyFeedListQuery(
+  options: Omit<Urql.UseQueryArgs<MyFeedListQueryVariables>, "query"> = {},
+) {
+  return Urql.useQuery<MyFeedListQuery>({
+    query: MyFeedListDocument,
     ...options,
   })
 }

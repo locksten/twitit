@@ -4,10 +4,13 @@ import {
   HashtagTwitListQuery,
   LikedTwitListDocument,
   LikedTwitListQuery,
+  MyFeedListDocument,
+  MyFeedListQuery,
   TwitFragment,
   UserTwitListDocument,
   UserTwitListQuery,
 } from "common/graphql.generated"
+import { NothingHere } from "components/NothingHere"
 import { Twit, _TwitFragments } from "components/Twit"
 import gql from "graphql-tag"
 import React, { FC } from "react"
@@ -24,7 +27,9 @@ export const TwitList: FC<{ type: TwitListType; param: string }> = ({
     const twits = typeMap[type].get(
       useQuery(typeMap[type].query(identifier))[0].data,
     )
-    return (
+    return twits?.length === 0 ? (
+      <NothingHere message="Nothing Here" />
+    ) : (
       <div>
         {twits?.map((twit) => (
           <div key={twit.id} tw="border-b border-gray-200">
@@ -74,6 +79,22 @@ export const _MyTwitListQuery = gql`
   ${_TwitFragments}
 `
 
+export const _MyFeedQuery = gql`
+  query MyFeedList {
+    me {
+      id
+      user {
+        id
+        feed {
+          id
+          ...Twit
+        }
+      }
+    }
+  }
+  ${_TwitFragments}
+`
+
 export const _HashtagTwitList = gql`
   query hashtagTwitList($text: String!) {
     hashtagByText(text: $text) {
@@ -113,7 +134,7 @@ export const _LikedTwitList = gql`
   ${_TwitFragments}
 `
 
-type TwitListType = "hashtag" | "user" | "liked"
+type TwitListType = "hashtag" | "user" | "liked" | "feed"
 
 const typeMap: Record<
   TwitListType,
@@ -135,6 +156,12 @@ const typeMap: Record<
       variables: { username },
     }),
     get: (data: UserTwitListQuery) => data?.userByName?.twits,
+  },
+  feed: {
+    query: (_: string) => ({
+      query: MyFeedListDocument,
+    }),
+    get: (data: MyFeedListQuery) => data?.me?.user.feed,
   },
   liked: {
     query: (username: string) => ({
