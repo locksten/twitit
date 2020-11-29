@@ -5,7 +5,7 @@ import { PrimaryButton } from "components/PrimaryButton"
 import { SecondaryButton } from "components/SecondaryButton"
 import { TextField } from "components/TextField"
 import gql from "graphql-tag"
-import React, { FC } from "react"
+import React, { FC, useState } from "react"
 import { useForm } from "react-hook-form"
 import { useNavigate } from "react-router-dom"
 import "twin.macro"
@@ -18,18 +18,12 @@ type Inputs = {
 export const Login: FC<{}> = ({ ...props }) => {
   const { logIn } = useAuth()
 
-  const [{ data: loginResult }, login] = useLoginMutation()
-  const [{ data: registerResult }, register] = useRegisterMutation()
+  const login = useLoginMutation()[1]
+  const register = useRegisterMutation()[1]
 
-  const loginErrorReason =
-    loginResult?.login.__typename === "FailedLoginResult"
-      ? loginResult.login.reason
-      : undefined
-  const registerErrorReason =
-    registerResult?.register.__typename === "FailedRegistrationResult"
-      ? registerResult.register.reason
-      : undefined
-  const errorReason = loginErrorReason || registerErrorReason
+  const [latestErrorReason, setLatestErrorReason] = useState<
+    string | undefined
+  >(undefined)
 
   const { register: registerInput, handleSubmit, reset } = useForm<Inputs>()
 
@@ -46,6 +40,8 @@ export const Login: FC<{}> = ({ ...props }) => {
             navigate(`/feed`)
             logIn({ accessToken: loginResult.authTokens.accessToken })
             reset()
+          } else if (loginResult?.__typename === "FailedLoginResult") {
+            setLatestErrorReason(loginResult.reason)
           }
         })}
       >
@@ -73,14 +69,18 @@ export const Login: FC<{}> = ({ ...props }) => {
                 navigate(`/feed`)
                 logIn({ accessToken: registerResult.authTokens.accessToken })
                 reset()
+              } else if (
+                registerResult?.__typename === "FailedRegistrationResult"
+              ) {
+                setLatestErrorReason(registerResult.reason)
               }
             })}
           />
           <PrimaryButton text="Log in" type="submitButton" />
         </div>
-        {loginResult?.login.__typename === "FailedLoginResult" && (
+        {latestErrorReason && (
           <div tw="rounded-md bg-red-200 text-red-800 py-2 text-center shadow-md">
-            {errorReason}
+            {latestErrorReason}
           </div>
         )}
       </form>

@@ -16,7 +16,7 @@ type FailedRegistrationResult = {
   reason:
     | "Username is already taken"
     | "Username must be at least one character long"
-    | "Password must be at least one twelve characters long"
+    | "Password must be at least twelve characters long"
 }
 
 export const FailedRegistrationResultType = t.objectType<
@@ -51,7 +51,7 @@ export const mutationRegister = t.field("register", {
     let err: FailedRegistrationResult["reason"] | undefined = undefined
 
     if (password.length < 12)
-      err = "Password must be at least one twelve characters long"
+      err = "Password must be at least twelve characters long"
 
     if (username.length < 1)
       err = "Username must be at least one character long"
