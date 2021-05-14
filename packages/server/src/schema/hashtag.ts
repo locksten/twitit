@@ -65,8 +65,10 @@ export const queryHashtagSearch = t.field("hashtagSearch", {
 
 export const createHashtags = async (pool: Pool, hashtags: string[]) => {
   try {
-    hashtags.forEach(
+    await Promise.all(
+      hashtags.map(
       async (t) => await db.insert("Hashtag", { text: t }).run(pool),
+      ),
     )
   } catch (error) {
     if (!isDatabaseError(error, "IntegrityConstraintViolation_UniqueViolation"))
