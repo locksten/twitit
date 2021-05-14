@@ -4,7 +4,7 @@ import { newDataLoaders } from "dataloaders"
 import { Pool } from "pg"
 
 const pool = new Pool({
-  connectionString: process.env.DATABASE_URL,
+  connectionString: process.env.DATABASE,
 })
 
 export const newAppContext = (ctx: ExpressContext) => ({

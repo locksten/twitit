@@ -1,0 +1,45 @@
+version: "3"
+
+services:
+  database:
+    image: "postgres"
+    environment:
+      - POSTGRES_USER
+      - POSTGRES_PASSWORD
+      - POSTGRES_DB
+    ports:
+      - 5432:5432
+    volumes:
+      - database-data:/var/lib/postgresql/data/
+
+  twitit-server:
+    build:
+      context: ..
+      dockerfile: packages/server/Dockerfile
+    environment:
+      - DATABASE
+    depends_on:
+      - database
+
+  twitit-web-app:
+    build:
+      context: ..
+      dockerfile: packages/web-app/Dockerfile
+      args:
+        - REACT_APP_GRAPHQL_SERVER
+    depends_on:
+      - twitit-server
+
+  nginx:
+    build:
+      context: nginx
+    ports:
+      - "80:80"
+      - "443:443"
+    volumes:
+      - /etc/letsencrypt:/etc/letsencrypt
+    depends_on:
+      - twitit-web-app
+
+volumes:
+  database-data:

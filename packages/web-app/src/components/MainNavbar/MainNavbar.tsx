@@ -5,13 +5,27 @@ import { Search } from "components/Search"
 import { TextField } from "components/TextField"
 import React, { FC } from "react"
 import "twin.macro"
+import tw, { css, styled } from "twin.macro"
+
+const Favorites = styled.div(
+  () => css`
+    ${tw`grid grid-flow-col gap-2 py-2 overflow-auto`}
+    ${css`
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    `}
+  `,
+)
 
 export const MainNavbar: FC<{}> = ({ ...props }) => {
   return (
-    <div tw="grid gap-2">
+    <nav tw="grid gap-2" {...props}>
       <AuthSegment tw="sm:hidden py-2 px-4" fullWidth />
       <div tw="flex justify-between px-4 overflow-hidden">
-        <div tw="grid grid-flow-col gap-2 py-2 overflow-auto" {...props}>
+        <Favorites>
           <Search />
           <NavButton to="/hashtag/react/twit" text="#react" />
           <NavButton to="/hashtag/graphql/twit" text="#graphql" />
@@ -37,9 +51,9 @@ export const MainNavbar: FC<{}> = ({ ...props }) => {
             absoluteMatch="user/eve/*"
             text="@eve"
           />
-        </div>
+        </Favorites>
         <AuthSegment tw="py-2 pl-6 hidden sm:block" />
       </div>
-    </div>
+    </nav>
   )
 }

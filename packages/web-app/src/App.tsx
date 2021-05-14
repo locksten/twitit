@@ -1,4 +1,5 @@
 /** @jsxImportSource @emotion/react */
+/// <reference types="@emotion/react/types/css-prop" />
 import { useAuthProvider } from "common/authContext"
 import { AppRouter } from "components/AppRouter"
 import { UrqlProvider } from "components/UrqlProvider"

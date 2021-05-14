@@ -19,15 +19,14 @@ type FailedRegistrationResult = {
     | "Password must be at least twelve characters long"
 }
 
-export const FailedRegistrationResultType = t.objectType<
-  FailedRegistrationResult
->({
-  name: "FailedRegistrationResult",
-  fields: () => [
-    typeResolver("FailedRegistrationResult"),
-    defaultStringLiteralFieldResolver("reason"),
-  ],
-})
+export const FailedRegistrationResultType =
+  t.objectType<FailedRegistrationResult>({
+    name: "FailedRegistrationResult",
+    fields: () => [
+      typeResolver("FailedRegistrationResult"),
+      defaultStringLiteralFieldResolver("reason"),
+    ],
+  })
 
 export const RegistrationResultType = t.unionType<
   SuccessfulLoginResult | FailedRegistrationResult

@@ -29,7 +29,8 @@ export const UrqlProvider: FC<{}> = ({ children }) => {
 
   const [client] = useState(() =>
     createClient({
-      url: "http://localhost:4000/graphql",
+      url:
+        process.env.REACT_APP_GRAPHQL_SERVER ?? "http://localhost:4000/graphql",
       requestPolicy: "cache-and-network",
       exchanges: [
         devtoolsExchange,

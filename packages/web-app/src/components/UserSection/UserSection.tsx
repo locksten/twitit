@@ -8,6 +8,7 @@ import gql from "graphql-tag"
 import React, { FC } from "react"
 import { Outlet, useParams } from "react-router-dom"
 import "twin.macro"
+import tw, { styled, css } from "twin.macro"
 
 export const UserSection: FC<{}> = ({ ...props }) => {
   const user = useUserByNameQuery({
@@ -32,21 +33,33 @@ export const UserSection: FC<{}> = ({ ...props }) => {
   )
 }
 
+const Tabs = styled.div(
+  () => css`
+    ${tw`grid grid-flow-col gap-8 py-2 px-2 overflow-auto`}
+    ${css`
+      ::-webkit-scrollbar {
+        display: none;
+      }
+      -ms-overflow-style: none;
+      scrollbar-width: none;
+    `}
+  `,
+)
+
 export const UserNavbar: FC<{
   id: string
   iAmFollowing: boolean
   isLoggedInUser: boolean
-}> = ({ id, iAmFollowing, isLoggedInUser, ...props }) => (
-  <div tw="grid grid-flow-col gap-8 py-2 px-2 overflow-auto" {...props}>
+}> = ({ id, iAmFollowing, isLoggedInUser }) => (
+  <Tabs>
     <div tw="grid grid-flow-col gap-4">
       <NavButton relativeTo="twit" text="Twits" />
-      {/* <NavButton relativeTo="mention" text="Mentions" /> */}
       <NavButton relativeTo="like" text="Likes" />
       <NavButton relativeTo="follower" text="Followers" />
       <NavButton relativeTo="following" text="Following" />
     </div>
     {!isLoggedInUser && <FollowButton id={id} iAmFollowing={iAmFollowing} />}
-  </div>
+  </Tabs>
 )
 
 export const _UserByName = gql`

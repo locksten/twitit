@@ -1,6 +1,6 @@
 {
   "db": {
-    "connectionString": "{{DATABASE_URL}}"
+    "connectionString": "{{DATABASE}}"
   },
   "outDir": "./src",
   "schemas": {

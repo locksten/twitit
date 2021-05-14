@@ -17,13 +17,11 @@ export const Search: FC<{}> = ({ ...props }) => {
     <form
       tw="grid gap-4"
       onSubmit={handleSubmit<Inputs>(({ searchTerm }) => {
-        console.log(searchTerm)
+        const s = searchTerm.replace(/\s/g, "")
         navigate(
-          searchTerm.startsWith("@")
-            ? `/user/${searchTerm.slice(1)}/twit`
-            : `/hashtag/${
-                searchTerm.startsWith("#") ? searchTerm.slice(1) : searchTerm
-              }/twit`,
+          s.startsWith("@")
+            ? `/user/${s.slice(1)}/twit`
+            : `/hashtag/${s.startsWith("#") ? s.slice(1) : s}/twit`,
         )
       })}
       {...props}

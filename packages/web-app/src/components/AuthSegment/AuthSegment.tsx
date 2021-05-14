@@ -28,7 +28,7 @@ export const AuthSegment: FC<{ fullWidth?: boolean }> = ({
           <NavButton to={`/login`} onClick={logOut} text="Logout" />
         </div>
       ) : (
-        <NavButton to="login" text="Log in" />
+        <NavButton tw="whitespace-nowrap" to="login" text="Log in" />
       )}
     </div>
   )

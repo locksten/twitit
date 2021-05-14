@@ -26,7 +26,7 @@ export const LikeButton: FC<{
       css={css`
         ${tw`text-orange-500`}
         ${isAuthor
-          ? tw`cursor`
+          ? tw`cursor-default`
           : tw`hover:(bg-orange-200 text-orange-500)
                active:(bg-orange-300 text-orange-600 shadow-inner)`}
         ${iHaveLiked && tw`bg-orange-300 text-orange-600`}

@@ -1,5 +1,6 @@
 /** @jsxImportSource @emotion/react */
 import { useAuth } from "common/authContext"
+import { RegistrationResult, LoginResult } from "common/graphql.generated"
 import { useLoginMutation, useRegisterMutation } from "common/urql.generated"
 import { PrimaryButton } from "components/PrimaryButton"
 import { SecondaryButton } from "components/SecondaryButton"
@@ -21,9 +22,21 @@ export const Login: FC<{}> = ({ ...props }) => {
   const login = useLoginMutation()[1]
   const register = useRegisterMutation()[1]
 
-  const [latestErrorReason, setLatestErrorReason] = useState<
-    string | undefined
-  >(undefined)
+  const [latestErrorReason, setLatestErrorReason] =
+    useState<string | undefined>(undefined)
+
+  const handleSubmition = (result?: RegistrationResult | LoginResult) => {
+    if (result?.__typename === "SuccessfulLoginResult") {
+      navigate(`/user/${result.user.username}/twit`)
+      logIn({ accessToken: result.authTokens.accessToken })
+      reset()
+    } else if (
+      result?.__typename === "FailedLoginResult" ||
+      result?.__typename === "FailedRegistrationResult"
+    ) {
+      setLatestErrorReason(result.reason)
+    }
+  }
 
   const { register: registerInput, handleSubmit, reset } = useForm<Inputs>()
 
@@ -33,17 +46,11 @@ export const Login: FC<{}> = ({ ...props }) => {
     <div tw="py-16" {...props}>
       <form
         tw="grid gap-4"
-        onSubmit={handleSubmit<Inputs>(async (info) => {
-          const res = await login(info)
-          const loginResult = res.data?.login
-          if (loginResult?.__typename === "SuccessfulLoginResult") {
-            navigate(`/feed`)
-            logIn({ accessToken: loginResult.authTokens.accessToken })
-            reset()
-          } else if (loginResult?.__typename === "FailedLoginResult") {
-            setLatestErrorReason(loginResult.reason)
-          }
-        })}
+        onSubmit={handleSubmit<Inputs>(async (info) =>
+          handleSubmition(
+            (await login(info)).data?.login as RegistrationResult,
+          ),
+        )}
       >
         <div tw="grid gap-2">
           <TextField
@@ -51,6 +58,7 @@ export const Login: FC<{}> = ({ ...props }) => {
             ref={registerInput({ required: true })}
             placeholder="Username"
             autocomplete
+            autoFocus
           />
           <TextField
             name="password"
@@ -62,19 +70,11 @@ export const Login: FC<{}> = ({ ...props }) => {
         <div tw="grid grid-flow-col gap-2">
           <SecondaryButton
             text="Register"
-            onClick={handleSubmit<Inputs>(async (info) => {
-              const res = await register(info)
-              const registerResult = res.data?.register
-              if (registerResult?.__typename === "SuccessfulLoginResult") {
-                navigate(`/feed`)
-                logIn({ accessToken: registerResult.authTokens.accessToken })
-                reset()
-              } else if (
-                registerResult?.__typename === "FailedRegistrationResult"
-              ) {
-                setLatestErrorReason(registerResult.reason)
-              }
-            })}
+            onClick={handleSubmit<Inputs>(async (info) =>
+              handleSubmition(
+                (await register(info)).data?.register as RegistrationResult,
+              ),
+            )}
           />
           <PrimaryButton text="Log in" type="submitButton" />
         </div>
@@ -130,3 +130,5 @@ const _Register = gql`
     }
   }
 `
+
+type Awaited<T> = T extends PromiseLike<infer U> ? Awaited<U> : T

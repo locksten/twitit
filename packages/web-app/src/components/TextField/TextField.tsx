@@ -9,11 +9,20 @@ type TextFieldProps = {
   type?: string
   placeholder?: string
   size?: number
+  autoFocus?: boolean
 }
 
 export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
   (
-    { name, size, type = "text", autocomplete = false, placeholder, ...props },
+    {
+      name,
+      size,
+      type = "text",
+      autocomplete = false,
+      placeholder,
+      autoFocus,
+      ...props
+    },
     ref,
   ) => {
     return (
@@ -25,6 +34,7 @@ export const TextField = forwardRef<HTMLInputElement, TextFieldProps>(
           type={type}
           placeholder={placeholder}
           autoComplete={autocomplete ? "on" : "off"}
+          autoFocus={autoFocus}
           size={size}
           {...props}
         />
