@@ -6,10 +6,10 @@
   "main": "./dist/server.js",
   "scripts": {
     "watch": "tsc-watch --onSuccess \"npm run start\"",
-    "start": "JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET:-$npm_package_config_jwt_access_secret} DATABASE_URL=${DATABASE_URL:-$npm_package_config_shadow_db} NODE_PATH=dist node ./dist/server.js",
+    "start": "JWT_ACCESS_SECRET=${JWT_ACCESS_SECRET:-$(node -p 'require(\"./package.json\").config.shadow_db')} DATABASE_URL=${DATABASE_URL:-$(node -p 'require(\"./package.json\").config.shadow_db')} NODE_PATH=dist node ./dist/server.js",
     "build": "tsc",
-    "gen:db-types": "DATABASE_URL=$npm_package_config_shadow_db npx zapatos",
-    "migrate": "DATABASE_URL=${DATABASE_URL:-$npm_package_config_dev_db} SHADOW_DATABASE_URL=$npm_package_config_shadow_db npx graphile-migrate"
+    "gen:db-types": "DATABASE_URL=$(node -p 'require(\"./package.json\").config.shadow_db') npx zapatos",
+    "migrate": "DATABASE_URL=${DATABASE_URL:-$(node -p 'require(\"./package.json\").config.dev_db')} SHADOW_DATABASE_URL=$(node -p 'require(\"./package.json\").config.shadow_db') npx graphile-migrate"
   },
   "config": {
     "dev_db": "postgres://postgres:@localhost:5432/twitit",
