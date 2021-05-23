@@ -1,5 +1,7 @@
 /** @jsxImportSource @emotion/react */
 import {
+  GlobalTwitListDocument,
+  GlobalTwitListQuery,
   HashtagTwitListDocument,
   HashtagTwitListQuery,
   LikedTwitListDocument,
@@ -134,7 +136,17 @@ export const _LikedTwitList = gql`
   ${_TwitFragments}
 `
 
-type TwitListType = "hashtag" | "user" | "liked" | "feed"
+export const _GlobalFeedQuery = gql`
+  query globalTwitList {
+    globalFeed {
+      id
+      ...Twit
+    }
+  }
+  ${_TwitFragments}
+`
+
+type TwitListType = "hashtag" | "user" | "liked" | "feed" | "globalFeed"
 
 const typeMap: Record<
   TwitListType,
@@ -162,6 +174,12 @@ const typeMap: Record<
       query: MyFeedListDocument,
     }),
     get: (data: MyFeedListQuery) => data?.me?.user.feed,
+  },
+  globalFeed: {
+    query: (_: string) => ({
+      query: GlobalTwitListDocument,
+    }),
+    get: (data: GlobalTwitListQuery) => data?.globalFeed,
   },
   liked: {
     query: (username: string) => ({

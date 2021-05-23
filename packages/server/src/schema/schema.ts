@@ -2,6 +2,7 @@ import { buildGraphQLSchema } from "gqtx"
 import { mutationLogin } from "schema/auth/login"
 import { mutationRegister } from "schema/auth/register"
 import { mutationFollowUser, mutationUnfollowUser } from "schema/follow"
+import { queryGlobalFeed } from "schema/globalFeed"
 import {
   queryHashtagById,
   queryHashtagByText,
@@ -23,6 +24,7 @@ const query = t.queryType({
     queryHashtagById,
     queryHashtagByText,
     queryHashtagSearch,
+    queryGlobalFeed,
   ],
 })
 

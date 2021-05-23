@@ -17,10 +17,23 @@ export const AppRouter: FC = () => {
       <div tw="max-w-xl mx-auto px-4">
         <Routes>
           <Route path="/">
-            {isLoggedIn ? <Navigate to="/feed" /> : <Navigate to="/login" />}
+            <Navigate to="/global-feed" />
           </Route>
           <Route path="login" element={<Login />} />
-          <Route path="feed" element={<TwitList type="feed" param="" />} />
+          <Route
+            path="feed"
+            element={
+              isLoggedIn ? (
+                <TwitList type="feed" param="" />
+              ) : (
+                <Navigate to="/login" />
+              )
+            }
+          />
+          <Route
+            path="global-feed"
+            element={<TwitList type="globalFeed" param="" />}
+          />
           <Route path="user/:username/*" element={<UserSection />}>
             <Route
               path="twit"

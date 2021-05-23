@@ -3,7 +3,7 @@ import { useAuth } from "common/authContext"
 import { useLoggedInUserQuery } from "common/urql.generated"
 import { NavButton } from "components/NavButton"
 import gql from "graphql-tag"
-import React, { FC } from "react"
+import React, { FC, Fragment } from "react"
 import "twin.macro"
 import tw, { css } from "twin.macro"
 
@@ -21,15 +21,21 @@ export const AuthSegment: FC<{ fullWidth?: boolean }> = ({
       `}
       {...props}
     >
-      {user ? (
-        <div tw="grid gap-2 grid-flow-col">
-          <NavButton to={`/feed`} text="Home" />
-          <NavButton to={`/user/${user.username}/twit`} text={user.username} />
-          <NavButton to={`/login`} onClick={logOut} text="Logout" />
-        </div>
-      ) : (
-        <NavButton tw="whitespace-nowrap" to="login" text="Log in" />
-      )}
+      <div tw="grid gap-2 grid-flow-col">
+        <NavButton to={`/global-feed`} text="All" />
+        {user ? (
+          <Fragment>
+            <NavButton to={`/feed`} text="Home" />
+            <NavButton
+              to={`/user/${user.username}/twit`}
+              text={user.username}
+            />
+            <NavButton to={`/login`} onClick={logOut} text="Logout" />
+          </Fragment>
+        ) : (
+          <NavButton tw="whitespace-nowrap" to="login" text="Log in" />
+        )}
+      </div>
     </div>
   )
 }
